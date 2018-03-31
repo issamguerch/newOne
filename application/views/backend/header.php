@@ -107,7 +107,6 @@
 <div id="notification" style="display: none;"></div>
 
 <div id="loading" style="display: none;">
-    <div class="any-element animation is-loading">
-        &nbsp;
-    </div>
+    <img src="<?php echo base_url('assets/img/loading.gif'); ?>"  style="padding-top: 197px;" />
+
 </div>

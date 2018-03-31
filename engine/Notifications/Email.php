@@ -161,7 +161,9 @@ class Email {
         $mailer->Body = $html;
 
         $mailer->addStringAttachment($icsStream->get(), 'invitation.ics');
+        //print_r($this->config);
 
+        //log_message('debug', "issaammm  1".print_r($mailer->getAllRecipientAddresses()));
         if ( ! $mailer->Send())
         {
             throw new \RuntimeException('Email could not been sent. Mailer Error (Line ' . __LINE__ . '): '
@@ -285,14 +287,15 @@ class Email {
 
         $mailer->From = $company['company_email'];
         $mailer->FromName = $company['company_name'];
-        $mailer->AddAddress($recipientEmail->get()); // "Name" argument crushes the phpmailer class.
+        $mailer->addAddress($recipientEmail->get()); // "Name" argument crushes the phpmailer class.
         $mailer->Subject = $this->framework->lang->line('new_account_password');
         $mailer->Body = $html;
+        //print_r($this->config);
 
         if ( ! $mailer->Send())
         {
             throw new \RuntimeException('Email could not been sent. Mailer Error (Line ' . __LINE__ . '): '
-                . $mailer->ErrorInfo);
+                . $mailer->isError());
         }
     }
 
@@ -309,13 +312,19 @@ class Email {
         {
             $mailer->isSMTP();
             $mailer->Host = $this->config['smtp_host'];
+            $mailer->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
             $mailer->SMTPAuth = TRUE;
             $mailer->Username = $this->config['smtp_user'];
             $mailer->Password = $this->config['smtp_pass'];
             $mailer->SMTPSecure = $this->config['smtp_crypto'];
             $mailer->Port = $this->config['smtp_port'];
         }
-
         $mailer->IsHTML($this->config['mailtype'] === 'html');
         $mailer->CharSet = $this->config['charset'];
 

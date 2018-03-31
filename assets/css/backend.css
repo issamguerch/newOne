@@ -145,6 +145,12 @@ root {
     max-width: 100%;
 }
 
+#loadingGIF {
+    background-image: url("../img/loading.gif");
+    display: block;
+    max-width: 100%;
+}
+
 .modal-message {
     margin-bottom: 10px;
 }
